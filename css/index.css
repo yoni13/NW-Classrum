@@ -4,6 +4,8 @@ body,html{
   margin: 0;
 }
 #inputarea {
+  overflow: auto;
+  white-space: pre ;
   position: relative;
   height: 90vh;
   width: 80%;

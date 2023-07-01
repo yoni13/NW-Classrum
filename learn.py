@@ -18,16 +18,20 @@ except Exception as e:
 
 # Create a new database
 db = client['keyword-db']
-loopnum = 0
-while True:
-    loopnum += 1
-    r = requests.get(urlget('翰林',loopnum))
-    if r.status_code != 200:
-        break
-    soup = BeautifulSoup(r.text, 'html5lib')
-    for data in soup.find_all('img',class_='b-lazy'):
-        if data.get('class')[0] == 'cover' or data.get('class')[0] == 'ban':
-            pass
-        else:
-            print(data.get('alt'))
-    time.sleep(random.randint(10,30))
+def learn(search):
+    loopnum = 0
+    while True:
+        loopnum += 1
+        r = requests.get(urlget(search,loopnum))
+        if r.status_code != 200:
+            break
+        soup = BeautifulSoup(r.text, 'html5lib')
+        for data in soup.find_all('img',class_='b-lazy'):
+            if data.get('class')[0] == 'cover' or data.get('class')[0] == 'ban':
+                pass
+            else:
+                if '國語' in data.get('alt'):
+                    
+                    print(data.get('alt'))
+        time.sleep(random.randint(10,30))
+learn('翰林')

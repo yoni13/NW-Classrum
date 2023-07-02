@@ -28,10 +28,10 @@ def send_js(path):
 def index():
     return render_template('index.html')
 
-@app.route('/subject')
+@app.route('/subject', methods=['POST'])
 def subject():
-    if request.args.get('subject'):
-        subject_json = json.loads(subjects)
-        return subject_json
-    else:
-        return abort(400)
+    data = request.get_json()
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0',threaded=True)

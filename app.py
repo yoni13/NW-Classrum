@@ -23,7 +23,7 @@ def GetChatText(text):
         Rtext = text
     if Rtext[0] != ' ':
         Rtext = ' ' + Rtext
-    RequestText = 'Which subject is' + Rtext + '''?,If it's about math return 1,chinese 2,English 3,science 4,computer 5,music 6,art 7,PE 8,history 9,geography 10,civics 11,,other 12'''
+    RequestText = 'Which main subject of' + Rtext + '''?,If it's about math return 1,chinese 2,English 3,science 4,computer 5,music 6,art 7,PE 8,history 9,geography 10,civics 11,,other 12'''
     for data in chatbot.ask(RequestText):
         RespText = data['message']
     return RespText

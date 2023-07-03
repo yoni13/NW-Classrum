@@ -22,7 +22,6 @@ function PostDataToBackEnd(CurrentLineText) {
 
 }
 
-let alphablet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function onloaded() {
     const InputArea = document.getElementById('inputarea');
     InputArea.textContent = '1. ';

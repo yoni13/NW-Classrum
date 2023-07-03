@@ -12,6 +12,22 @@ chatbot = Chatbot(config={
     "password": os.getenv('password'),
 })
 
+DataExchange = {
+   "1":"math",
+   "2":"chinese",
+   "3":"English",
+   "4":"science",
+   "5":"computer",
+   "6":"music",
+   "7":"art",
+   "8":"PE",
+   "9":"history",
+   "10":"geography",
+   "11":"civics",
+   "12":"other"
+}
+
+
 def GetChatText(text):
     try:
         # If the first character is a number and a dot,remove it
@@ -23,10 +39,15 @@ def GetChatText(text):
         Rtext = text
     if Rtext[0] != ' ':
         Rtext = ' ' + Rtext
-    RequestText = 'Which main subject of' + Rtext + '''?,If it's about math return 1,chinese 2,English 3,science 4,computer 5,music 6,art 7,PE 8,history 9,geography 10,civics 11,,other 12'''
+    RequestText = 'Which main subject of' + Rtext + '''?,If it's about math return 1,chinese 2,English 3,science 4,computer 5,music 6,art 7,PE 8,history 9,geography 10,civics 11,,other 12.response in json format only,formatis {'subject':<the number>}}'''
     for data in chatbot.ask(RequestText):
-        RespText = data['message']
-    return RespText
+        Resp = data['message']
+    RespNoBreak = Resp.replace('\n', '')
+    RespNoSpace = RespNoBreak.replace(' ', '')
+    print(RespNoSpace)
+    JsonResp = json.loads(RespNoSpace)
+    Data = DataExchange[str(JsonResp['subject'])]
+    return Data
 
 
 from pymongo.mongo_client import MongoClient

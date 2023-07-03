@@ -10,6 +10,7 @@ function InputGoToEnd(element) {
 }
 
 function PostDataToBackEnd(CurrentLineText) {
+    if (localStorage.getItem("LastCallTime") == 0) {
     fetch('subject', {
         method: 'POST',
         headers: {
@@ -19,10 +20,17 @@ function PostDataToBackEnd(CurrentLineText) {
             'text': CurrentLineText,
         }),
     })
+    localStorage.setItem("LastCallTime", 6);
+}
+    else{
+        localStorage.setItem("LastCallTime", localStorage.getItem("LastCallTime") - 1);
+    }
+
 }
 
 let alphablet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function onloaded() {
+    localStorage.setItem("LastCallTime", 2);
     const InputArea = document.getElementById('inputarea');
     InputArea.textContent = '1. ';
     InputGoToEnd(InputArea);

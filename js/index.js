@@ -10,7 +10,6 @@ function InputGoToEnd(element) {
 }
 
 function PostDataToBackEnd(CurrentLineText) {
-    if (localStorage.getItem("LastCallTime") == 0) {
     fetch('subject', {
         method: 'POST',
         headers: {
@@ -20,17 +19,11 @@ function PostDataToBackEnd(CurrentLineText) {
             'text': CurrentLineText,
         }),
     })
-    localStorage.setItem("LastCallTime", 6);
-}
-    else{
-        localStorage.setItem("LastCallTime", localStorage.getItem("LastCallTime") - 1);
-    }
 
 }
 
 let alphablet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function onloaded() {
-    localStorage.setItem("LastCallTime", 2);
     const InputArea = document.getElementById('inputarea');
     InputArea.textContent = '1. ';
     InputGoToEnd(InputArea);
@@ -42,13 +35,8 @@ function onloaded() {
             InputArea.textContent += count + 1 + '. ';
             InputArea.scrollTop = InputArea.scrollHeight;
             InputGoToEnd(InputArea);
-        }
-        else {
-            var CurrentLine =  (InputArea.textContent.match(/\n/g)||[]).length + 1;
-            if (alphablet.includes(e.key)) {
-            var CurrentLineText = InputArea.textContent.split('\n')[CurrentLine - 1] + e.key;
+            var CurrentLineText = InputArea.textContent.split('\n')[count - 1]
             PostDataToBackEnd(CurrentLineText);
-            }
         }
     });
 }

@@ -9,7 +9,7 @@ function InputGoToEnd(element) {
     element.focus();
 }
 
-function PostDataToBackEnd(CurrentLineText) {
+function PostDataToBackEnd(InputArea,CurrentLineText, count) {
     fetch('subject', {
         method: 'POST',
         headers: {
@@ -19,23 +19,30 @@ function PostDataToBackEnd(CurrentLineText) {
             'text': CurrentLineText,
         }),
     })
-
+        .then((response) => response.json())
+        .then((data) => {
+            subject = data['subject'];
+            // insert subject between last line
+            InputArea.innerHTML = InputArea.innerHTML.replace(CurrentLineText, CurrentLineText + '<div id=subject>' + subject + '</div>');
+            InputGoToEnd(InputArea);
+        }
+        )
 }
 
 function onloaded() {
     const InputArea = document.getElementById('inputarea');
-    InputArea.textContent = '1. ';
+    InputArea.innerHTML = '1. ';
     InputGoToEnd(InputArea);
     InputArea.addEventListener('keydown', function (e) {
         if (e.code == 'Enter' || e.code == 'NumpadEnter') {
             e.preventDefault();
-            InputArea.textContent += '\n';
-            var count = (InputArea.textContent.match(/\n/g) || []).length;
-            InputArea.textContent += count + 1 + '. ';
+            InputArea.innerHTML += '\n';
+            var count = (InputArea.innerHTML.match(/\n/g) || []).length;
+            InputArea.innerHTML += count + 1 + '. ';
             InputArea.scrollTop = InputArea.scrollHeight;
             InputGoToEnd(InputArea);
-            var CurrentLineText = InputArea.textContent.split('\n')[count - 1]
-            PostDataToBackEnd(CurrentLineText);
+            var CurrentLineText = InputArea.innerHTML.split('\n')[count - 1]
+            PostDataToBackEnd(InputArea,CurrentLineText, count);
         }
     });
 }

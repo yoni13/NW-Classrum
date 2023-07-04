@@ -19,3 +19,13 @@ body,html{
   font-size: 20px;
   font-family: 'Noto Sans TC', sans-serif;
 }
+#subject {
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 5px;
+  position: relative;
+  font-family: 'Noto Sans TC', sans-serif;
+  display: inline;
+}

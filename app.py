@@ -13,18 +13,18 @@ chatbot = Chatbot(config={
 })
 
 DataExchange = {
-   "1":"math",
-   "2":"chinese",
+   "1":"Math",
+   "2":"Chinese",
    "3":"English",
-   "4":"science",
-   "5":"computer",
-   "6":"music",
-   "7":"art",
+   "4":"Science",
+   "5":"Computer",
+   "6":"Music",
+   "7":"Art",
    "8":"PE",
-   "9":"history",
-   "10":"geography",
-   "11":"civics",
-   "12":"other"
+   "9":"History",
+   "10":"Geography",
+   "11":"Civics",
+   "12":"Other"
 }
 
 
@@ -44,10 +44,9 @@ def GetChatText(text):
         Resp = data['message']
     RespNoBreak = Resp.replace('\n', '')
     RespNoSpace = RespNoBreak.replace(' ', '')
-    print(RespNoSpace)
     JsonResp = json.loads(RespNoSpace)
     Data = DataExchange[str(JsonResp['subject'])]
-    return Data
+    return {'subject':Data}
 
 
 from pymongo.mongo_client import MongoClient

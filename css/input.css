@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap');
+/* Full the whole screen */
+body,html{
+  padding: 0;
+  margin: 0;
+}
+#inputarea {
+  overflow: auto;
+  white-space: pre ;
+  position: relative;
+  height: 90vh;
+  width: 80%;
+  background-color: #fff;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  left : 10%;
+  font-size: 20px;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+#subject {
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 3px;
+  position: relative;
+  font-family: 'Noto Sans TC', sans-serif;
+  display: inline;
+}

@@ -1,22 +1,10 @@
 from flask import Flask, render_template, request, redirect, send_from_directory, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from connectgpt import GetChatText
+
 import json, os
-from dotenv import load_dotenv
-load_dotenv()
 
-from pymongo.mongo_client import MongoClient
-uri = "mongodb+srv://yoni:"+os.getenv('passwd')+"@cluster0.o0k9job.mongodb.net/?retryWrites=true&w=majority"
-
-# Create a new client and connect to the server
-client = MongoClient(uri)
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
+import predict
 
 app = Flask(__name__)
 
@@ -49,5 +37,5 @@ def index():
 def subject():
     RequestJson = request.get_json()
     text = RequestJson['text']
-    return GetChatText(text)
+    return predict.SubjNumTranslator(predict.MakePred(text))
 

@@ -1,0 +1,6 @@
+version: '2'
+services:
+    classrum:
+      build: .
+      ports:
+        - "1326:1326"

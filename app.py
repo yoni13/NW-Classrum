@@ -33,9 +33,9 @@ def index():
     return render_template('inputarea.html')
 
 @app.route('/subject', methods=['POST'])
-@limiter.limit("1/2second", override_defaults=True)
+#@limiter.limit("1/2second", override_defaults=True)
 def subject():
     RequestJson = request.get_json()
     text = RequestJson['text']
-    return predict.SubjNumTranslator(predict.MakePred(text))
+    return {'subject':predict.SubjNumTranslator(predict.MakePred(text))}
 

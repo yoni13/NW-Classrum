@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, send_from_directory, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
-import json, os
-
+import os,json,jieba
 import predict
 
+
+
 app = Flask(__name__)
+
 
 limiter = Limiter(
     get_remote_address,
@@ -20,6 +21,7 @@ limiter = Limiter(
 def home():
     return render_template('index.html')
 '''
+
 @app.route('/css/<path:path>')
 def send_css(path):
     return send_from_directory('css', path)
@@ -39,3 +41,5 @@ def subject():
     text = RequestJson['text']
     return {'subject':predict.SubjNumTranslator(predict.MakePred(text))}
 
+if __name__ == "__main__":
+        app.run(debug=True)

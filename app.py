@@ -37,8 +37,8 @@ def SubjNumTranslator(theNum):
 
 
 timetable = [[1,12,17,14,3,2,4,5],[12,2,15,1,8,6,10,2],[10,2,3,12,17,7,16,1],[9,12,5,10,1,2,7,12],[2,6,16,20,12,11,1,10],[],[]]
-
-
+# Pre build jieba cache
+MakePred('國習')
 
 app = Flask(__name__)
 

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import os,json,jieba
-import joblib
+import joblib,datetime
 
 
 def tokenize_zh(text):
@@ -34,6 +34,9 @@ def SubjNumTranslator(theNum):
         if Num == theNum:
             return SubjectNames[round]
         round +=1
+
+
+timetable = [[1,12,17,14,3,2,4,5],[12,2,15,1,8,6,10,2],[10,2,3,12,17,7,16,1],[9,12,5,10,1,2,7,12],[2,6,16,20,12,11,1,10],[],[]]
 
 
 
@@ -70,7 +73,9 @@ def index():
 def subject():
     RequestJson = request.get_json()
     text = RequestJson['text']
-    return {'subject':SubjNumTranslator(MakePred(text))}
+    subject_num = MakePred(text)
+    print(timetable[datetime.datetime.today().weekday()])
+    return {'subject':SubjNumTranslator(subject_num)}
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0')

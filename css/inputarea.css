@@ -113,26 +113,19 @@ body{
 
 .homeworkNextTimeDateBG{
     display: flex;
-    width: 158px;
+    width: 30%;
     height: 30px;
     flex-shrink: 0;
     border-radius: 20px;
     background: #686565;
     position: relative;
-    left: 20%;
-}
-
-.NextDateText{
-    display: flex;
-width: 113px;
-height: 24px;
-flex-direction: column;
-justify-content: center;
-flex-shrink: 0;
-color: #DBDBDB;
-font-family: Inter;
-font-size: 20px;
-font-style: normal;
-font-weight: 300;
-line-height: 16px; /* 80% */
+    left: 40%;
+    top: 7px;
+    color: #DBDBDB;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 30px; /* 100% */
+    justify-content: center;
 }

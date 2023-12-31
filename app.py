@@ -90,6 +90,10 @@ def send_css(path):
 def send_js(path):
     return send_from_directory('js', path)
 
+@app.route('/imgs/<path:path>')
+def send_imgs(path):
+    return send_from_directory('imgs', path)
+
 @app.route('/inputarea')
 def index():
     return render_template('inputarea.html')

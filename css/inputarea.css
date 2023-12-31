@@ -79,17 +79,17 @@ body{
 #homeworkList{
     width: 100%;
     max-width: 800px;
-    height: 292px;
+    height: 120%;
     flex-shrink: 0;
     border-radius: 20px;
     background: #1F1F1F;
     position: relative;
     top: 16px;
+    padding: 10px;
 }
 
 .homeworkItem{
     left: 21px;
-    top: 19px;
     width: 90%;
     height: 50px;
     flex-shrink: 0;
@@ -113,7 +113,7 @@ body{
 
 .homeworkNextTimeDateBG{
     display: flex;
-    width: 30%;
+    width: 45%;
     height: 30px;
     flex-shrink: 0;
     border-radius: 20px;
@@ -128,4 +128,8 @@ body{
     font-weight: 300;
     line-height: 30px; /* 100% */
     justify-content: center;
+}
+
+br{
+    --rem: 15px;
 }

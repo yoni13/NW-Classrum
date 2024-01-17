@@ -11,5 +11,5 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libopenblas-dev
 COPY . /opt/app
-RUN chmod +x /opt/app/getmodelupdate.sh && /opt/app/getmodelupdate.sh
+RUN python3 getmodelupdate.py
 CMD ["gunicorn", "--bind", "0.0.0.0:1326", "app:app"]

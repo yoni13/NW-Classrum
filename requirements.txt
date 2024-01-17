@@ -6,3 +6,4 @@ joblib
 scikit-learn
 Flask-Limiter
 git+https://github.com/APCLab/jieba-tw.git
+requests

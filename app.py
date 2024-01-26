@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, send_from_directory, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-import os,json,jieba
-import joblib,datetime
-import time
+from werkzeug.utils import secure_filename
+import os,json,jieba,joblib,datetime,time,requests
+
 
 def tokenize_zh(text):
     words = jieba.lcut(text)
@@ -76,6 +76,16 @@ limiter = Limiter(
     storage_uri="memory://",
 )
 
+UPLOAD_FOLDER = 'temp'
+ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def home():
@@ -108,6 +118,20 @@ def subject():
     next_class_weekday = GetNextClassWeekday(today_weekday,subject_num,timetable)
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節'}
+
+
+@app.route('/submit_imgs', methods=['POST','GET'])
+def submit_imgs():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], 
+                                       filename))
+                r = requests.post('http://localhost:4000/submit_imgs', files={'file': open('temp/'+filename, 'rb')})
+                return r.text
 
 @app.route('/ping')
 def ping():

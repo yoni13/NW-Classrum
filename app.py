@@ -3,6 +3,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.utils import secure_filename
 import os,json,jieba,joblib,datetime,time,requests
+from flask_cors import cross_origin
 
 
 def tokenize_zh(text):
@@ -68,7 +69,6 @@ MakePred('國習')
 
 app = Flask(__name__)
 
-
 limiter = Limiter(
     get_remote_address,
     app=app,
@@ -109,6 +109,7 @@ def index():
     return render_template('inputarea.html')
 
 @app.route('/subject', methods=['POST'])
+@cross_origin(send_wildcard=True)
 #@limiter.limit("1/2second", override_defaults=True)
 def subject():
     RequestJson = request.get_json()

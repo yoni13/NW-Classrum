@@ -1,6 +1,7 @@
 version: '2'
 services:
     classrum:
+      restart: always
       build: .
       ports:
         - "1326:1326"

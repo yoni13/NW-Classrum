@@ -1,11 +1,8 @@
 gunicorn
 flask
-pymongo
 python-dotenv
 joblib
 scikit-learn
 Flask-Limiter
 git+https://github.com/APCLab/jieba-tw.git
-requests
 Flask-Cors
-flask_socketio

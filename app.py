@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, send_from_directory, abort
+from flask import Flask, request, redirect, send_from_directory, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.utils import secure_filename
@@ -88,25 +88,9 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/')
-def home():
-    return redirect('/inputarea')
+def root():
+    return redirect('https://nw-classrum.nicewhite.xyz/')
 
-
-@app.route('/css/<path:path>')
-def send_css(path):
-    return send_from_directory('css', path)
-
-@app.route('/js/<path:path>')
-def send_js(path):
-    return send_from_directory('js', path)
-
-@app.route('/imgs/<path:path>')
-def send_imgs(path):
-    return send_from_directory('imgs', path)
-
-@app.route('/inputarea')
-def index():
-    return render_template('inputarea.html')
 
 @app.route('/subject', methods=['POST'])
 @cross_origin(send_wildcard=True)
@@ -120,19 +104,6 @@ def subject():
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)}
 
-
-@app.route('/submit_imgs', methods=['POST','GET'])
-def submit_imgs():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], 
-                                       filename))
-                r = requests.post('http://localhost:4000/submit_imgs', files={'file': open('temp/'+filename, 'rb')})
-                return r.text
 
 @app.route('/ping')
 def ping():

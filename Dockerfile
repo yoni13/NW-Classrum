@@ -6,7 +6,7 @@ RUN \
     printf "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; \
     fi
 COPY requirements.txt /opt/app
-RUN pip install -r requirements.txt --no-cache-dir --upgrade --no-install-recommends
+RUN pip install -r requirements.txt --no-cache-dir --upgrade
 RUN apt-get clean \
     && apt-get update \
     && apt-get install -y --no-install-recommends libopenblas-dev

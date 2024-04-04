@@ -5,3 +5,4 @@ scikit-learn
 git+https://github.com/APCLab/jieba-tw.git
 uvicorn[standard]
 requests
+gunicorn

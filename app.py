@@ -1,10 +1,9 @@
-from flask import Flask, request, redirect, send_from_directory, abort
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from werkzeug.utils import secure_filename
-import os,json,jieba,joblib,datetime,time,requests
-from flask_cors import cross_origin
+from fastapi import FastAPI
+import os,json,jieba,joblib,datetime,time
+from pydantic import BaseModel
 
+class Subject(BaseModel):
+    text: str
 
 def tokenize_zh(text):
     words = jieba.lcut(text)
@@ -67,36 +66,11 @@ timetable = [[1,12,17,14,3,2,4,5],[12,2,15,1,8,6,10,2],[10,2,3,12,17,7,16,1],[9,
 # Pre build jieba cache
 MakePred('國習')
 
-app = Flask(__name__)
+app = FastAPI()
 
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=[],
-    storage_uri="memory://",
-)
-
-UPLOAD_FOLDER = 'temp'
-ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-@app.route('/')
-def root():
-    return redirect('https://nw-classrum.nicewhite.xyz/')
-
-
-@app.route('/subject', methods=['POST'])
-@cross_origin(send_wildcard=True)
-#@limiter.limit("1/2second", override_defaults=True)
-def subject():
-    RequestJson = request.get_json()
+@app.post('/subject')
+async def subject(subject:Subject):
+    RequestJson = subject
     text = RequestJson['text']
     subject_num = MakePred(text)
     today_weekday = datetime.datetime.today().weekday()
@@ -104,10 +78,6 @@ def subject():
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)}
 
-
-@app.route('/ping')
-def ping():
-    return str(time.time())
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0')

@@ -78,6 +78,3 @@ async def subject(subject:Subject):
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)}
 
-
-if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0')

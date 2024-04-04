@@ -9,4 +9,4 @@ RUN apt-get clean \
     && apt-get install -y --no-install-recommends libopenblas-dev
 COPY . /opt/app
 RUN python3 getmodelupdate.py
-CMD ["gunicorn","app:app","--port","1326","-k","uvicorn.workers.UvicornWorker","--host","0.0.0.0"]
+CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","--bind","0.0.0.0:1326"]

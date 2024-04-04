@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import os,json,jieba,joblib,datetime,time
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 class Subject(BaseModel):
     text: str
@@ -67,6 +68,15 @@ timetable = [[1,12,17,14,3,2,4,5],[12,2,15,1,8,6,10,2],[10,2,3,12,17,7,16,1],[9,
 MakePred('國習')
 
 app = FastAPI()
+
+app.add_middleware(
+CORSMiddleware,
+allow_origins=["*"],
+allow_credentials=True,allow_methods=["*"],
+allow_headers=["*"],
+)
+
+
 
 @app.post('/subject')
 async def subject(subject:Subject):

@@ -1,5 +1,7 @@
 services:
-  - docker:24.0.5-dind
+  name: docker:24.0.5-dind
+  command: ["--insecure-registry=192.168.1.121:6000","--registry-mirror=http://192.168.1.121:6000" ]
+  alias: docker
 stages:
   - build
 

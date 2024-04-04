@@ -9,4 +9,4 @@ RUN apt-get clean \
     && apt-get install -y --no-install-recommends libopenblas-dev
 COPY . /opt/app
 RUN python3 getmodelupdate.py
-CMD ["uvicorn","main:app","--reload","--port","1326"]
+CMD ["uvicorn","app:app","--reload","--port","1326"]

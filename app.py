@@ -1,10 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,request
 import os,json,jieba,joblib,datetime,time
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-class Subject(BaseModel):
-    text: str
 
 def tokenize_zh(text):
     words = jieba.lcut(text)
@@ -79,8 +76,8 @@ allow_headers=["*"],
 
 
 @app.post('/subject')
-async def subject(subject:Subject):
-    RequestJson = subject
+async def subject(request:Request):
+    RequestJson = request.json()
     text = RequestJson['text']
     subject_num = MakePred(text)
     today_weekday = datetime.datetime.today().weekday()

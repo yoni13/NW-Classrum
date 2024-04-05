@@ -1,4 +1,4 @@
-from fastapi import FastAPI,request
+from fastapi import FastAPI,Request
 import os,json,jieba,joblib,datetime,time
 from fastapi.middleware.cors import CORSMiddleware
 

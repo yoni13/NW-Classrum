@@ -76,11 +76,11 @@ allow_headers=["*"],
 
 
 @app.post('/subject')
-def subject(request:Request):
-    RequestJson = json.loads(request.body())
+async def subject(request:Request):
+    RequestJson = json.loads(await request.body())
     text = RequestJson['text']
     subject_num = MakePred(text)
     today_weekday = datetime.datetime.today().weekday()
     next_class_weekday = GetNextClassWeekday(today_weekday,subject_num,timetable)
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
-    return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)}
+    await return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)}

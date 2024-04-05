@@ -76,7 +76,7 @@ allow_headers=["*"],
 
 
 @app.post('/subject')
-def subject(request:Request):
+async def subject(request:Request):
     RequestJson = json.loads(await request.body())
     text = RequestJson['text']
     subject_num = MakePred(text)

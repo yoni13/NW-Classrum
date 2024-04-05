@@ -76,8 +76,8 @@ allow_headers=["*"],
 
 
 @app.post('/subject')
-async def subject(request:Request):
-    RequestJson = json.loads(await request.body())
+def subject(request:Request):
+    RequestJson = json.loads(request.body())
     text = RequestJson['text']
     subject_num = MakePred(text)
     today_weekday = datetime.datetime.today().weekday()

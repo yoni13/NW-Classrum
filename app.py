@@ -60,7 +60,15 @@ def FindNextPeriodTime(subject_num,next_class_weekday,timetable):
         if str(class_) == subject_num:
             return period
 
-timetable = [[1,12,17,14,3,2,4,5],[12,2,15,1,8,6,10,2],[10,2,3,12,17,7,16,1],[9,12,5,10,1,2,7,12],[2,6,16,20,12,11,1,10],[],[]]
+timetable = [
+[1,14,12,3,10,2,7,5],
+[12,11,15,1,8,6,10,2],
+[5,2,12,17,18,7,16,1],
+[9,4,3,2,1,6,12,12],
+[2,2,16,20,12,1,11,10]
+,[],[]
+]
+
 # Pre build jieba cache
 MakePred('國習')
 

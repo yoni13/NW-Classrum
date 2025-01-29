@@ -30,31 +30,42 @@ def MakePred(name):
     return label_encoder.inverse_transform(predicted_subject)[0]
 
 
-# Today weekday is an int,subject num is an string,timetable is a dict,
-def GetNextClassWeekday(today_weekday,subject_num,timetable):
-    if today_weekday + 1 > 6:
-        weekday_num = 0
-    else:
-        weekday_num  = today_weekday + 1
+def GetNextClassWeekday(today_weekday, subject_num, timetable):
+    """
+    Determines the weekday of the next class for a given subject.
+
+    Args:
+        today_weekday (int): The current weekday (0 for Monday, 6 for Sunday).
+        subject_num (str): The subject number to find the next class for.
+        timetable (list): The timetable data structure.
+
+    Returns:
+        int: The weekday number (0-6) of the next class.
+    """
+    weekday_num = (today_weekday + 1) % 7 # More concise way to handle weekday looping
 
     while True:
         if int(subject_num) in timetable[weekday_num]:
-            break
-        else:
-            if weekday_num + 1 > 6:
-                weekday_num = 0
-            else:
-                weekday_num += 1
+            return weekday_num
+        weekday_num = (weekday_num + 1) % 7 # More concise way to handle weekday looping
 
-    return weekday_num
 
-# We use class_ to avoid conflix with python class
-def FindNextPeriodTime(subject_num,next_class_weekday,timetable):
-    period = 0
-    for class_ in timetable[next_class_weekday]:
-        period += 1
+def FindNextPeriodTime(subject_num, next_class_weekday, timetable):
+    """
+    Finds the period number of the next class.
+
+    Args:
+        subject_num (str): The subject number.
+        next_class_weekday (int): The weekday of the next class.
+        timetable (list): The timetable data structure.
+
+    Returns:
+        int: The period number of the next class.
+    """
+    for period, class_ in enumerate(timetable[next_class_weekday], 1):
         if str(class_) == subject_num:
             return period
+    return None
 
 timetable = [
     [1,14,12,3,10,2,7,5],

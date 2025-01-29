@@ -22,50 +22,29 @@ label_encoder = joblib.load('subject_recognition_label.joblib')
 AllSubjectNum = {'1': '英文', '2': '國文', '3': '地理', '4': '家政', '5': '公民', '6': '體育', '7': '歷史', '8': '資訊', '9': '音樂', '10': '物理', '11': '化學', '12': '數學', '13': '健康', '14': '地科', '15': '視覺藝術', '16': '班級事物', '17': '生物', '18': '作文', '19': '童軍', '20': '輔導'}
 WeekdayTranslate = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
 
-def MakePred(name):
-    new_data = [name]
-    new_data_vectorized = vectorizer.transform(new_data).toarray()
-    # make input a 
-    predicted_subject = loaded_model.predict(new_data_vectorized)
-    return label_encoder.inverse_transform(predicted_subject)[0]
-
-
-def GetNextClassWeekday(today_weekday, subject_num, timetable):
-    """
-    Determines the weekday of the next class for a given subject.
-
-    Args:
-        today_weekday (int): The current weekday (0 for Monday, 6 for Sunday).
-        subject_num (str): The subject number to find the next class for.
-        timetable (list): The timetable data structure.
-
-    Returns:
-        int: The weekday number (0-6) of the next class.
-    """
-    weekday_num = (today_weekday + 1) % 7 # More concise way to handle weekday looping
+# Today weekday is an int,subject num is an string,timetable is a dict,
+def GetNextClassWeekday(today_weekday,subject_num,timetable):
+    if today_weekday + 1 > 6:
+        weekday_num = 0
+    else:
+        weekday_num  = today_weekday + 1
 
     while True:
         if int(subject_num) in timetable[weekday_num]:
-            return weekday_num
-        weekday_num = (weekday_num + 1) % 7 # More concise way to handle weekday looping
+            break
+        else:
+            if weekday_num + 1 > 6:
+                weekday_num = 0
+            else:
+                weekday_num += 1
 
+    return weekday_num
 
-def FindNextPeriodTime(subject_num, next_class_weekday, timetable):
-    """
-    Finds the period number of the next class.
-
-    Args:
-        subject_num (str): The subject number.
-        next_class_weekday (int): The weekday of the next class.
-        timetable (list): The timetable data structure.
-
-    Returns:
-        int: The period number of the next class.
-    """
-    for period, class_ in enumerate(timetable[next_class_weekday], 1):
-        if str(class_) == subject_num:
-            return period
-    return None
+# We use class_ to avoid conflix with python class
+def FindNextPeriodTime(subject_num,next_class_weekday,timetable):
+    period = 0
+    for class_ in timetable[next_class_weekday]:
+        period += 1
 
 timetable = [
     [1,14,12,3,10,2,7,5],

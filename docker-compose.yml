@@ -5,3 +5,9 @@ services:
       build: .
       ports:
         - "1326:1326"
+      security_opt:
+        - systempaths=unconfined
+      devices:
+        - /dev/dri:/dev/dri
+      volumes:
+        - /sys/kernel/debug/:/sys/kernel/debug/:ro

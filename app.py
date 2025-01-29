@@ -1,7 +1,8 @@
 from fastapi import FastAPI,Request
 import os,json,jieba,joblib,datetime,time
 from fastapi.middleware.cors import CORSMiddleware
-
+from scirknn import scirknn_lite
+import numpy as np
 
 def tokenize_zh(text):
     words = jieba.lcut(text)
@@ -14,8 +15,9 @@ __main__.tokenize_zh = tokenize_zh
 stop_words = ['。 ', '， ']
 
 # 載入模型
-loaded_model = joblib.load('subject_recognition_model.joblib')
+loaded_model = scirknn_lite.MLPClassifier("clf.rknn")
 vectorizer = joblib.load('subject_reconition_vec.joblib')
+label_encoder = joblib.load('subject_recognition_label.joblib')
 
 AllSubjectNum = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
 SubjectNames = ["英文","國文","地理","家政","公民","體育","歷史","資訊","音樂","物理","化學","數學","健康","地科","視覺藝術","班級事物","生物","作文","童軍",'輔導']
@@ -23,9 +25,10 @@ WeekdayTranslate = ['星期一','星期二','星期三','星期四','星期五',
 
 def MakePred(name):
     new_data = [name]
-    new_data_vectorized = vectorizer.transform(new_data)
+    new_data_vectorized = vectorizer.transform(new_data).toarray()
+    # make input a 
     predicted_subject = loaded_model.predict(new_data_vectorized)
-    return predicted_subject[0]
+    return label_encoder.inverse_transform(predicted_subject)[0]
 
 def SubjNumTranslator(theNum):
     round = 0
@@ -91,4 +94,8 @@ async def subject(request:Request):
     today_weekday = datetime.datetime.today().weekday()
     next_class_weekday = GetNextClassWeekday(today_weekday,subject_num,timetable)
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
-    return {'subject':SubjNumTranslator(subject_num), 'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)}
+    return {
+        # 'subject':subject_num,
+        'subject':SubjNumTranslator(subject_num),
+        'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)
+            }

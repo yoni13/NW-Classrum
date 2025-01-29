@@ -90,5 +90,5 @@ async def subject(request:Request):
     return {
         # 'subject':subject_num,
         'subject':AllSubjectNum[subject_num],
-        'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)
+        'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + AllSubjectNum(subject_num)
     }

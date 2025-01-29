@@ -19,8 +19,7 @@ loaded_model = scirknn_lite.MLPClassifier("clf.rknn")
 vectorizer = joblib.load('subject_reconition_vec.joblib')
 label_encoder = joblib.load('subject_recognition_label.joblib')
 
-AllSubjectNum = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
-SubjectNames = ["英文","國文","地理","家政","公民","體育","歷史","資訊","音樂","物理","化學","數學","健康","地科","視覺藝術","班級事物","生物","作文","童軍",'輔導']
+AllSubjectNum = {'1': '英文', '2': '國文', '3': '地理', '4': '家政', '5': '公民', '6': '體育', '7': '歷史', '8': '資訊', '9': '音樂', '10': '物理', '11': '化學', '12': '數學', '13': '健康', '14': '地科', '15': '視覺藝術', '16': '班級事物', '17': '生物', '18': '作文', '19': '童軍', '20': '輔導'}
 WeekdayTranslate = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
 
 def MakePred(name):
@@ -30,12 +29,6 @@ def MakePred(name):
     predicted_subject = loaded_model.predict(new_data_vectorized)
     return label_encoder.inverse_transform(predicted_subject)[0]
 
-def SubjNumTranslator(theNum):
-    round = 0
-    for Num in AllSubjectNum:
-        if Num == theNum:
-            return SubjectNames[round]
-        round += 1
 
 # Today weekday is an int,subject num is an string,timetable is a dict,
 def GetNextClassWeekday(today_weekday,subject_num,timetable):
@@ -64,12 +57,12 @@ def FindNextPeriodTime(subject_num,next_class_weekday,timetable):
             return period
 
 timetable = [
-[1,14,12,3,10,2,7,5],
-[12,11,15,1,8,6,10,2],
-[5,2,12,17,18,7,16,1],
-[9,4,3,2,1,6,12,12],
-[2,2,16,20,12,1,11,10]
-,[],[]
+    [1,14,12,3,10,2,7,5],
+    [12,11,15,1,8,6,10,2],
+    [5,2,12,17,18,7,16,1],
+    [9,4,3,2,1,6,12,12],
+    [2,2,16,20,12,1,11,10]
+    ,[],[]
 ]
 
 # Pre build jieba cache
@@ -78,10 +71,10 @@ MakePred('國習')
 app = FastAPI()
 
 app.add_middleware(
-CORSMiddleware,
-allow_origins=["*"],
-allow_credentials=True,allow_methods=["*"],
-allow_headers=["*"],
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -96,6 +89,6 @@ async def subject(request:Request):
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {
         # 'subject':subject_num,
-        'subject':SubjNumTranslator(subject_num),
+        'subject':AllSubjectNum[subject_num],
         'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + SubjNumTranslator(subject_num)
-            }
+    }

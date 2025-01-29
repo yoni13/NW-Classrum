@@ -22,6 +22,13 @@ label_encoder = joblib.load('subject_recognition_label.joblib')
 AllSubjectNum = {'1': '英文', '2': '國文', '3': '地理', '4': '家政', '5': '公民', '6': '體育', '7': '歷史', '8': '資訊', '9': '音樂', '10': '物理', '11': '化學', '12': '數學', '13': '健康', '14': '地科', '15': '視覺藝術', '16': '班級事物', '17': '生物', '18': '作文', '19': '童軍', '20': '輔導'}
 WeekdayTranslate = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
 
+def MakePred(name):
+    new_data = [name]
+    new_data_vectorized = vectorizer.transform(new_data).toarray()
+    # make input a 
+    predicted_subject = loaded_model.predict(new_data_vectorized)
+    return label_encoder.inverse_transform(predicted_subject)[0]
+
 # Today weekday is an int,subject num is an string,timetable is a dict,
 def GetNextClassWeekday(today_weekday,subject_num,timetable):
     if today_weekday + 1 > 6:

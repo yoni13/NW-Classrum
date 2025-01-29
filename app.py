@@ -52,6 +52,8 @@ def FindNextPeriodTime(subject_num,next_class_weekday,timetable):
     period = 0
     for class_ in timetable[next_class_weekday]:
         period += 1
+        if str(class_) == subject_num:
+            return period
 
 timetable = [
     [1,14,12,3,10,2,7,5],

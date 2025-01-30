@@ -27,7 +27,7 @@ def MakePred(name):
     new_data_vectorized = vectorizer.transform(new_data).toarray()
     # make input a 
     predicted_subject = loaded_model.predict(new_data_vectorized)
-    return label_encoder.inverse_transform(predicted_subject)[0]
+    return label_encoder.inverse_transform(predicted_subject)[0], loaded_model.predict_proba(new_data_vectorized)
 
 # Today weekday is an int,subject num is an string,timetable is a dict,
 def GetNextClassWeekday(today_weekday,subject_num,timetable):
@@ -82,12 +82,13 @@ app.add_middleware(
 async def subject(request:Request):
     RequestJson = json.loads(await request.body())
     text = RequestJson['text']
-    subject_num = MakePred(text)
+    subject_num, proba = MakePred(text)
     today_weekday = datetime.datetime.today().weekday()
     next_class_weekday = GetNextClassWeekday(today_weekday,subject_num,timetable)
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {
         # 'subject':subject_num,
         'subject':AllSubjectNum[subject_num],
-        'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + AllSubjectNum[subject_num]
+        'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + AllSubjectNum[subject_num],
+        'proba':proba[0]
     }

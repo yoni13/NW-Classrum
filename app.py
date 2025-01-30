@@ -25,7 +25,6 @@ WeekdayTranslate = ['星期一','星期二','星期三','星期四','星期五',
 def MakePred(name):
     new_data = [name]
     new_data_vectorized = vectorizer.transform(new_data).toarray()
-    # make input a 
     predicted_subject = loaded_model.predict(new_data_vectorized)
     return label_encoder.inverse_transform(predicted_subject)[0], loaded_model.predict_proba(new_data_vectorized)
 
@@ -90,5 +89,5 @@ async def subject(request:Request):
         # 'subject':subject_num,
         'subject':AllSubjectNum[subject_num],
         'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + AllSubjectNum[subject_num],
-        'proba':proba
+        'proba':proba[0][int(subject_num)-1]
     }

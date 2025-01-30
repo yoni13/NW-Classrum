@@ -89,5 +89,5 @@ async def subject(request:Request):
         # 'subject':subject_num,
         'subject':AllSubjectNum[subject_num],
         'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + AllSubjectNum[subject_num],
-        'proba':proba[0][int(subject_num)-1]
+        'proba':proba.tolist()
     }

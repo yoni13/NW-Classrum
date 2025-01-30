@@ -83,12 +83,17 @@ async def subject(request:Request):
     RequestJson = json.loads(await request.body())
     text = RequestJson['text']
     subject_num, proba = MakePred(text)
+    if proba < 0.5:
+        return {
+            'subject':'',
+            'nextclasstime':'',
+            'proba': proba
+        }
     today_weekday = datetime.datetime.today().weekday()
     next_class_weekday = GetNextClassWeekday(today_weekday,subject_num,timetable)
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)
     return {
-        # 'subject':subject_num,
         'subject':AllSubjectNum[subject_num],
         'nextclasstime': WeekdayTranslate[next_class_weekday] + '第'+str(next_class_period)+'節 | ' + AllSubjectNum[subject_num],
-        'proba':proba.tolist()
+        'proba': proba
     }

@@ -26,7 +26,7 @@ def MakePred(name):
     new_data = [name]
     new_data_vectorized = vectorizer.transform(new_data).toarray()
     predicted_subject, predicted_proba = loaded_model.predict(new_data_vectorized)
-    return label_encoder.inverse_transform(predicted_subject)[0], predicted_proba.tolist()
+    return label_encoder.inverse_transform(predicted_subject)[0], predicted_proba.tolist()[0, predicted_subject[0]]
 
 # Today weekday is an int,subject num is an string,timetable is a dict,
 def GetNextClassWeekday(today_weekday,subject_num,timetable):
@@ -82,13 +82,13 @@ async def subject(request:Request):
     RequestJson = json.loads(await request.body())
     text = str(RequestJson['text'])
     subject_num, proba = MakePred(text)
-    # if proba < 0.5:
-    #     return {
-    #         'text':text,
-    #         'subject':'',
-    #         'nextclasstime':'',
-    #         'proba': proba
-    #     }
+    if proba < 0.5:
+        return {
+            'text':text,
+            'subject':'',
+            'nextclasstime':'',
+            'proba': proba
+        }
     today_weekday = datetime.datetime.today().weekday()
     next_class_weekday = GetNextClassWeekday(today_weekday,subject_num,timetable)
     next_class_period = FindNextPeriodTime(subject_num,next_class_weekday,timetable)

@@ -26,7 +26,7 @@ def MakePred(name):
     new_data = [name]
     new_data_vectorized = vectorizer.transform(new_data).toarray()
     predicted_subject, predicted_proba = loaded_model.predict(new_data_vectorized)
-    return label_encoder.inverse_transform(predicted_subject)[0], predicted_proba[0, predicted_subject[0]]
+    return label_encoder.inverse_transform(predicted_subject)[0], predicted_proba[0, predicted_subject[0]].tolist()
 
 # Today weekday is an int,subject num is an string,timetable is a dict,
 def GetNextClassWeekday(today_weekday,subject_num,timetable):

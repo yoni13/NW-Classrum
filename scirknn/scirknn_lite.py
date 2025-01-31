@@ -55,7 +55,7 @@ class MLPClassifier:
     def predict(self, x):
         probs = self.predict_proba(x)
         pred = np.argmax(probs, axis=1)
-        return [self.classes[n] for n in pred]
+        return [self.classes[n] for n in pred] , probs
 
     def predict_proba(self, x):
         prob = self.regressor.predict(x)

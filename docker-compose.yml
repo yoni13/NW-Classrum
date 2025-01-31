@@ -10,4 +10,4 @@ services:
       devices:
         - /dev/dri:/dev/dri
       volumes:
-        - ./jieba.cache:/tmp/jieba.cache
+        - ./jiebacache:/tmp/

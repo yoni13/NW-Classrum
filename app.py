@@ -81,7 +81,7 @@ app.add_middleware(
 @app.post('/subject')
 async def subject(request:Request):
     RequestJson = json.loads(await request.body())
-    text = RequestJson['text']
+    text = str(RequestJson['text'])
     subject_num, proba = MakePred(text)
     if proba < 0.5:
         return {

@@ -9,7 +9,7 @@ services:
         - /dev/dri:/dev/dri
       volumes:
         - jiebacache:/tmp/
-      network:
+      networks:
         - dokploy-network
 
 volumes:

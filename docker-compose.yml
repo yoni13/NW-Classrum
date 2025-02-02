@@ -3,11 +3,14 @@ services:
     classrum:
       restart: always
       build: .
-      ports:
-        - "1326:1326"
       security_opt:
         - systempaths=unconfined
       devices:
         - /dev/dri:/dev/dri
       volumes:
-        - ./jiebacache:/tmp/
+        - jiebacache:/tmp/
+      network:
+        - dokploy-network
+
+volumes:
+  jiebacache:
